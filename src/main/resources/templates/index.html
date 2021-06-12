@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Say hello</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<video autoplay="autoplay" width="320" height="240" controls>
+		<source th:src="${encodeUrl}" type="video/mp4">
+		Your browser does not support the video tag.
+	</video>
+</body>
+</html>
