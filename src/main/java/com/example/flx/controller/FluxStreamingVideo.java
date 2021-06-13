@@ -14,7 +14,6 @@ import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.flx.service.IProcessUrl;
@@ -26,19 +25,6 @@ import com.example.flx.util.UtilUrlProcess;
 public class FluxStreamingVideo {
 	@Autowired
 	private IProcessUrl processUrlServ;
-	
-	/**
-	 * Using web-mvc starter
-	 * @param encodeUrl
-	 * @param headers
-	 * @return
-	 * @throws MalformedURLException
-	 */
-//	@GetMapping ("/watch/{encodeUrl}")
-//	public ResponseEntity<ResourceRegion> getVideo(@PathVariable("encodeUrl") String encodeUrl, @RequestHeader HttpHeaders headers) throws MalformedURLException {
-//		String staticUrl = processUrlServ.getStaticUrl(String.format(UtilUrlProcess.ENCODE_URL_TEMPL, encodeUrl));
-//		return buildVideoResourceRegion(staticUrl, headers);
-//	}
 	
 	/**
 	 * Using webflux-starter
@@ -62,13 +48,6 @@ public class FluxStreamingVideo {
 	@GetMapping("/flux/{filename}")
 	public ResponseEntity<UrlResource> downloadVideo(@PathVariable("filename") String filename) throws MalformedURLException{
 		return buildVideoResourceResponseEntity(String.format(UtilUrlProcess.PATH_NAME, filename));
-	}
-	
-	private ResponseEntity<ResourceRegion> buildVideoResourceRegion(String staticUrl, HttpHeaders headers) throws MalformedURLException {
-		UrlResource video = new UrlResource(staticUrl);
-		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
-				.contentType(MediaTypeFactory.getMediaType(video).orElse(MediaType.APPLICATION_OCTET_STREAM))
-				.body(resourceRegion(video, headers));
 	}
 	
 	private ResourceRegion resourceRegion (UrlResource video, HttpHeaders header) {
