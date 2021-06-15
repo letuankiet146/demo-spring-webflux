@@ -1,13 +1,9 @@
 package com.example.flx.controller;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.ResourceRegion;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
@@ -47,28 +43,7 @@ public class FluxStreamingVideo {
 	 */
 	@GetMapping("/flux/{filename}")
 	public ResponseEntity<UrlResource> downloadVideo(@PathVariable("filename") String filename) throws MalformedURLException{
-		return buildVideoResourceResponseEntity(String.format(UtilUrlProcess.PATH_NAME, filename));
-	}
-	
-	private ResourceRegion resourceRegion (UrlResource video, HttpHeaders header) {
-		try {
-			long contentLength = video.contentLength();
-			HttpRange range = header.getRange().stream().findFirst().orElse(null);
-			ResourceRegion result = null;
-			if (range!=null) {
-				long start = range.getRangeStart(contentLength);
-				long end = range.getRangeEnd(contentLength);
-				long rangeLength = ((1*1024*1024) > (end-start+1))?(end-start+1):(1*1024*1024);
-				result = new ResourceRegion(video, start, rangeLength);
-			} else {
-				long rangeLength = ((1*1024*1024) > contentLength)?contentLength:(1*1024*1024);
-				result = new ResourceRegion(video, 0, rangeLength);
-			}
-			return result;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return buildVideoResourceResponseEntity(String.format(UtilUrlProcess.PATH_NAME2, filename));
 	}
 	
 	private ResponseEntity<UrlResource> buildVideoResourceResponseEntity(String urlResource) throws MalformedURLException {
